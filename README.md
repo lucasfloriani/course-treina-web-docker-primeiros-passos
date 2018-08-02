@@ -246,3 +246,42 @@ CMD cmd param1 param2
 Ambas as formas nesse exemplo produzem o mesmo resultado, mas é recomendado pela documentação do Docker que a forma **exec** seja utilizada.
 
 Para uma referência completa de todas as opções disponíveis para utilizar no seu Dockerfile, consulte a [documentação de referência](https://docs.docker.com/engine/reference/builder).
+
+## Volumes
+
+Lista todos os volumes disponíveis no sistema.
+
+```bash
+docker volume ls
+```
+
+Remove o ultimo volume criado.
+
+```bash
+docker volume remove $(docker volume ls -q | head -n 1)
+```
+
+Mapeia o ultimo volume criado com um novo container.
+
+```bash
+docker run --rm -it -v $(docker volume ls -q | head -n 1):/myvol treinaweb/volume ls /myvol
+```
+
+Cria um novo volume nomeado.
+
+```bash
+docker volume create <nome-do-container>
+docker volume create treinaweb
+```
+
+Cria um container anexando o volume nomeado treinaweb.
+
+```bash
+docker run --rm -it -v treinaweb:/myvol treinaweb/volume ls /myvol
+```
+
+Lista as informações do volume nomeado treinaweb
+
+```bash
+docker volume inspect treinaweb
+```
