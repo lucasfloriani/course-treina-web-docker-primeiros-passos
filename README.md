@@ -227,7 +227,7 @@ docker run -p 8080:8080 -v D:\git\course-treina-web-docker-primeiros-passos\html
 
 Para explicar com mais detalhes a relação entre **ENTRYPOINT** e **CMD**, podemos recorrer a essa tabela presenta na documentação do Docker.
 
-![ENTRYPOINT e CMD](entrypoint-and-cmd.png)
+![ENTRYPOINT e CMD](images/entrypoint-and-cmd.png)
 
 Tanto o **ENTRYPOINT** com o **CMD** podem ser executados de duas formas:
 
