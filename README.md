@@ -285,3 +285,110 @@ Lista as informações do volume nomeado treinaweb
 ```bash
 docker volume inspect treinaweb
 ```
+
+## Gerenciamento de redes entre containers
+
+Os comandos relacionados a keyword **network** são utilizado para realizar a comunicação entre containers, sendo muito similar a uma rede.
+
+Lista os network disponíveis
+
+```bash
+docker network ls
+```
+
+Para remover uma network
+
+```bash
+docker network rm <network-id>
+```
+
+Inspeciona informações do network bridge
+
+```bash
+docker network inspect bridge
+```
+
+Cria um novo network do tipo bridge chamado treinaweb.
+É utilizado a criação de uma nova network para que possamos acessar os outros containers pelos seus respectivos nomes que foram atrelados a eles.
+
+```bash
+docker network create --driver bridge treinaweb
+```
+
+Executa um novo container, inserindo o network adapter chamado treinaweb
+Parâmetro **-itd** é usado para executando um container em background
+
+```bash
+docker run --network=treinaweb -itd --name container3 busybox
+```
+
+Conecta um container já em execução a uma network, definindo um apelido dentro daquela rede
+
+```bash
+docker network connect --alias c1 treinaweb container1
+```
+
+Conectar-se a um container executando
+
+```bash
+docker attach <nome-container>
+```
+
+Criar um nome alias de network para o container, para assim ele ser acessado por outros containers com este alias, utilizando assim o parâmetro **--net-alias**
+
+```bash
+docker run --network treinaweb -itd --name container4 --net-alias c4 busybox
+```
+
+Para adicionar um nome alias de network para um container que já esta ativo usamos
+
+```bash
+docker network connect --alias c1 treinaweb container1
+```
+
+## Docker Store
+
+Para achar imagens docker para utilizar em seu projeto, podemos acessar a Docker Store, onde é o local para encontrar imagens pré configuradas para utilização.
+
+## Docker Compose
+
+Ele é uma ferramenta utilizada para automatizar as etapas de criação e execução dos nossos containers.
+O Docker Compose utiliza de um arquivo yaml chamado **docker-compose**, onde nele é adicionado quais os containers que serão utilizados e quais serão suas configurações especificas.
+
+Para executarmos o Docker Compose utilizamos o seguinte comando:
+
+```bash
+docker-compose build
+```
+
+### Projeto Rails com Docker Compose
+
+Configurar o container web:
+
+```bash
+docker-compose run web rails new . --force --database=postgresql --skip-bundle
+```
+
+Para mudar as permissões dos arquivos caso eles estejam criados com o usuário root, usamos:
+
+```bash
+sudo chown -R $USER: .
+```
+
+Copie o arquivo **database.yml** com o comando:
+
+```base
+cp ../database.yml config/database.yml
+```
+
+Depois disso executamos a configuração do database:
+
+```base
+docker-compose run web rake db:create
+```
+
+Agora podemos iniciar o docker-compose para iniciar a aplicação:
+
+```base
+docker-compose up
+```
